@@ -1,0 +1,78 @@
+Employee
+1.create POST
+/api/employees/create
+
+payload
+{
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com",
+  "address": "123 Elm Street",
+  "nic": "12345678901",
+  "dob": "1990-01-01",
+  "gender": "M",
+  "designation": "Software Engineer"
+}
+
+2.list GET
+/api/employees
+
+result
+[
+    {
+        "id": 1,
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john.doe@example.com",
+        "address": "123 Elm Street",
+        "nic": "12345678901",
+        "dob": "1990-01-01",
+        "gender": "M",
+        "designation": "Software Engineer",
+        "img_url": null
+    }
+]
+
+3.GetByID GET
+/api/employees/1
+
+result
+{
+    "id": 1,
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@example.com",
+    "address": "123 Elm Street",
+    "nic": "12345678901",
+    "dob": "1990-01-01",
+    "gender": "M",
+    "designation": "Software Engineer",
+    "img_url": null
+}
+
+4.UpdateByID PUT
+/api/employees/1/update/
+
+payload 
+{
+  "first_name": "Chamara"
+}
+
+result
+{
+    "id": 1,
+    "first_name": "Chamara",
+    "last_name": "Doe",
+    "email": "john.doe@example.com",
+    "address": "123 Elm Street",
+    "nic": "12345678901",
+    "dob": "1990-01-01",
+    "gender": "M",
+    "designation": "Software Engineer",
+    "img_url": "/media/jhfghsdgfds"
+}
+
+5.DeleteByID 
+/api/employees/1/delete/
+
+
