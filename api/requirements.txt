@@ -1,0 +1,7 @@
+Django==5.0
+djangorestframework==3.15.2
+djangorestframework_simplejwt
+mysqlclient
+Pillow
+django-cors-headers
+django-cors-headers
