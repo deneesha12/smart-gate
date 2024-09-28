@@ -10,8 +10,8 @@ const EditUser = () => {
 
     const [formData, setFormData] = useState<Admin>({
         id: userData?.id || 0,
-        firstName: userData?.firstName || '',
-        lastName: userData?.lastName || '',
+        first_name: userData?.first_name || '',
+        last_name: userData?.last_name || '',
         role: userData?.role || '',
         status: userData?.status || '',
         email:userData?.email || '',
@@ -52,7 +52,7 @@ const EditUser = () => {
                 <TextField
                     label="First Name"
                     name="firstName"
-                    value={formData.firstName}
+                    value={formData.first_name}
                     onChange={handleChange}
                     required
                     fullWidth
@@ -61,7 +61,7 @@ const EditUser = () => {
                 <TextField
                     label="Last Name"
                     name="lastName"
-                    value={formData.lastName}
+                    value={formData.last_name}
                     onChange={handleChange}
                     required
                     fullWidth
