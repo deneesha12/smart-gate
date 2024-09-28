@@ -8,7 +8,7 @@ import EditUser from "../Pages/user/EditUser";
 import CreateUser from "../Pages/user/CreateUser";
 import CreateEmployee from "../Pages/employee/CreateEmployee";
 import EditEmployee from "../Pages/employee/EditEmployee";
-
+import AttendanceTable from "../Pages/attendance/AttendanceTable";
 
 const router = createBrowserRouter([
     {
@@ -23,6 +23,9 @@ const router = createBrowserRouter([
             {path: "/employee/create", element: <CreateEmployee/>}, // Add this route
             {path: "/employee/edit", element: <EditEmployee/>}, // Add this route
             {path: "/employees", element: <EmployeesTable/>},
+            {path: "/attendance", element: <AttendanceTable/>},
+
+
         ],
     },
 ]);

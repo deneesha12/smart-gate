@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     MaterialReactTable,
     useMaterialReactTable,
@@ -8,9 +8,12 @@ import {
 import { Box, Button, Container, MenuItem, Typography } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
-import { data as initialData, type Person } from '../Person';
+import {  type Person } from '../Person';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
+import axios from 'axios';
+
+
 
 const columnHelper = createMRTColumnHelper<Person>();
 
@@ -19,11 +22,11 @@ const columns = [
         header: 'ID',
         size: 40,
     }),
-    columnHelper.accessor('firstName', {
+    columnHelper.accessor('first_name', {
         header: 'First Name',
         size: 120,
     }),
-    columnHelper.accessor('lastName', {
+    columnHelper.accessor('last_name', {
         header: 'Last Name',
         size: 120,
     }),
@@ -54,8 +57,23 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
+
+
 const EmployeesTable = () => {
-    const [tableData, setTableData] = useState<Person[]>(initialData); // Initialize state with Person data
+    const [employeeData, setEmployeeData] = useState<Person[]>([])
+   // Fetch employee data on component mount
+   useEffect(() => {
+    axios.get(import.meta.env.VITE_API_URI+'employees/',{      
+        withCredentials: true
+    }) // Replace with your actual API endpoint
+        .then((response) => setEmployeeData(response.data))
+        .catch((error) => console.error('Error fetching employee data:', error));
+    }, []);
+
+    useEffect(()=>{
+        setTableData(employeeData)
+    }, [employeeData])
+    const [tableData, setTableData] = useState<Person[]>(employeeData); // Initialize state with Person data
     const navigate = useNavigate(); // Use navigate to switch pages
 
     const handleExportRows = (rows: MRT_Row<Person>[]) => {

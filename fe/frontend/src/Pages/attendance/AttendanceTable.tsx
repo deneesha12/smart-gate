@@ -1,39 +1,38 @@
-import  { useState, useEffect } from 'react';
-import { MaterialReactTable, useMaterialReactTable, type MRT_Row, createMRTColumnHelper } from 'material-react-table';
+import { useEffect, useState } from 'react';
+import {
+    MaterialReactTable,
+    useMaterialReactTable,
+    type MRT_Row,
+    createMRTColumnHelper,
+} from 'material-react-table';
 import { Box, Button, Container, MenuItem, Typography } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { mkConfig, generateCsv, download } from 'export-to-csv'; //or use your library of choice here
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
-import { type Admin } from '../Admin';
+import {  type Attendance } from '../../Attendance';
+import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import axios from 'axios';
 
 
-const columnHelper = createMRTColumnHelper<Admin>();
+
+const columnHelper = createMRTColumnHelper<Attendance>();
 
 const columns = [
     columnHelper.accessor('id', {
         header: 'ID',
         size: 40,
     }),
-    columnHelper.accessor('first_name', {
-        header: 'First Name',
+    columnHelper.accessor('employee_name', {
+        header: 'Employee Name',
         size: 120,
     }),
-    columnHelper.accessor('last_name', {
-        header: 'Last Name',
+    columnHelper.accessor('date', {
+        header: 'Date',
         size: 120,
     }),
-    columnHelper.accessor('email',{
-        header:'Email',
-        size:120
-    }),
-    columnHelper.accessor('role', {
-        header: 'Role',
+    columnHelper.accessor('time', {
+        header: 'Time',
         size: 300,
-    }),
-    columnHelper.accessor('status', {
-        header: 'STATUS',
     }),
 ];
 
@@ -43,26 +42,26 @@ const csvConfig = mkConfig({
     useKeysAsHeaders: true,
 });
 
-const AdminTable = () => {
-    const [adminData, setAdminData] = useState<Admin[]>([])
-    // Fetch employee data on component mount
-    useEffect(() => {
-     axios.get(import.meta.env.VITE_API_URI+'users/',{      
-         withCredentials: true
-     }) // Replace with your actual API endpoint
-         .then((response) => setAdminData(response.data))
-         .catch((error) => console.error('Error fetching employee data:', error));
-     }, []);
 
-     const [tableData, setTableData] = useState<Admin[]>(adminData); // Initialize state with Person data
 
-     useEffect(()=>{
-        setTableData(adminData)
-    }, [adminData])
- 
+const AttendanceTable = () => {
+    const [attendance, setAttendance] = useState<Attendance[]>([])
+   // Fetch employee data on component mount
+   useEffect(() => {
+    axios.get(import.meta.env.VITE_API_URI+'attendance/',{
+        withCredentials: true
+    }) // Replace with your actual API endpoint
+        .then((response) => setAttendance(response.data))
+        .catch((error) => console.error('Error fetching employee data:', error));
+    }, []);
+
+    useEffect(()=>{
+        setTableData(attendance)
+    }, [attendance])
+    const [tableData, setTableData] = useState<Attendance[]>(attendance); // Initialize state with Person data
     const navigate = useNavigate(); // Use navigate to switch pages
 
-    const handleExportRows = (rows: MRT_Row<Admin>[]) => {
+    const handleExportRows = (rows: MRT_Row<Attendance>[]) => {
         const rowData = rows.map((row) => row.original);
         const csv = generateCsv(csvConfig)(rowData);
         download(csvConfig)(csv);
@@ -77,8 +76,8 @@ const AdminTable = () => {
         setTableData((prevData) => prevData.filter((row) => row.id !== rowId));
     };
 
-    const handleEdit = (row: Admin) => {
-        navigate(`/user/edit`, { state: { userData: row } });
+    const handleEdit = (row: Attendance) => {
+        navigate(`/employee/edit`, { state: { userData: row } });
     };
 
     const table = useMaterialReactTable({
@@ -90,7 +89,7 @@ const AdminTable = () => {
         positionToolbarAlertBanner: 'bottom',
         renderTopToolbarCustomActions: ({ table }) => (
             <Container>
-                <Typography variant='h6'>User Table</Typography>
+                <Typography variant="h6">Employee Table</Typography>
                 <Box
                     sx={{
                         display: 'flex',
@@ -118,32 +117,14 @@ const AdminTable = () => {
                         Export Page Rows
                     </Button>
                     <Button
-                        disabled={
-                            !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-                        }
+                        disabled={!table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()}
                         onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
                         startIcon={<FileDownloadIcon />}
                     >
                         Export Selected Rows
                     </Button>
-                    {/* New button to navigate to create page */}
-                    <Button
-                        sx={{
-                            backgroundColor: '#DDB49F',    // Background color
-                            color: 'black',                 // Text color
-                            '&:hover': {
-                                backgroundColor: '#c89c87',   // Hover background color
-                            },
-                        }}
-                        onClick={() => navigate('/user/create')}
-                        variant="contained"
-                    >
-                        Add New User
-                    </Button>
-
                 </Box>
             </Container>
-
         ),
         enableRowActions: true,
         positionActionsColumn: 'last',
@@ -172,4 +153,4 @@ const AdminTable = () => {
     );
 };
 
-export default AdminTable;
+export default AttendanceTable;

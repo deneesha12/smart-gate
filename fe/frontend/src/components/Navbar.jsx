@@ -13,6 +13,7 @@ import {
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [menue, setMenue] = useState(null);
@@ -24,6 +25,14 @@ const Navbar = () => {
   const handleProfilClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout =()=>{
+    axios.post(import.meta.env.VITE_API_URI+'logout/').then(res=>{
+      console.log(res)
+      navigate("/");
+    })
+    handleProfilClose()
+  }
 
   const handleMenuOpen = (event) => {
     setMenue(event.currentTarget);
@@ -55,12 +64,12 @@ const Navbar = () => {
 
         {/* Navigation Buttons */}
         <Box sx={{ display: { md: "flex" } }}>
-          <Button
+          {/* <Button
               sx={{ color: "#000" }}
               onClick={() => { navigate('/') }}
           >
             Home
-          </Button>
+          </Button> */}
           <Button
               sx={{ color: "#000" }}
               onClick={() => { navigate('/user') }}
@@ -72,6 +81,12 @@ const Navbar = () => {
               onClick={() => { navigate('/employees') }}
           >
             Employee
+          </Button>
+          <Button
+              sx={{ color: "#000" }}
+              onClick={() => { navigate('/attendance') }}
+          >
+            Employee Attendance
           </Button>
         </Box>
 
@@ -118,7 +133,7 @@ const Navbar = () => {
           onClose={handleProfilClose}
         >
           <MenuItem onClick={handleProfilClose}>Profile</MenuItem>
-          <MenuItem onClick={handleProfilClose}>Logout</MenuItem>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
 
         <Menu

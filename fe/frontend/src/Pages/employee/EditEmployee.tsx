@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { Person, data as initialData } from '../../Person';
+import { Person } from '../../Person';
 
 const EditEmployee = () => {
     const location = useLocation();
@@ -10,8 +10,8 @@ const EditEmployee = () => {
 
     const [formData, setFormData] = useState<Person>({
         id: userData?.id || 0,
-        firstName: userData?.firstName || '',
-        lastName: userData?.lastName || '',
+        first_name: userData?.first_name || '',
+        last_name: userData?.last_name || '',
         email: userData?.email || '',
         nic: userData?.nic || '',
         dob: userData?.dob || '',
@@ -34,11 +34,11 @@ const EditEmployee = () => {
         e.preventDefault();
 
         // Update the data in the existing data array (mock update)
-        const updatedData = initialData.map((employee) =>
-            employee.id === formData.id ? formData : employee
-        );
+        // const updatedData = initialData.map((employee) =>
+        //     employee.id === formData.id ? formData : employee
+        // );
 
-        console.log('Updated Employee Data:', updatedData);
+        // console.log('Updated Employee Data:', updatedData);
 
         // Navigate back to the /employee page
         navigate('/employees');
@@ -53,7 +53,7 @@ const EditEmployee = () => {
                 <TextField
                     label="First Name"
                     name="firstName"
-                    value={formData.firstName}
+                    value={formData.first_name}
                     onChange={handleChange}
                     required
                     fullWidth
@@ -62,7 +62,7 @@ const EditEmployee = () => {
                 <TextField
                     label="Last Name"
                     name="lastName"
-                    value={formData.lastName}
+                    value={formData.last_name}
                     onChange={handleChange}
                     required
                     fullWidth

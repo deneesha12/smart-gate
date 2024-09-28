@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { Admin, data as initialData } from '../../Admin';
+import { Admin } from '../../Admin';
 
 const EditUser = () => {
     const location = useLocation();
@@ -14,6 +14,8 @@ const EditUser = () => {
         lastName: userData?.lastName || '',
         role: userData?.role || '',
         status: userData?.status || '',
+        email:userData?.email || '',
+        password:userData?.password || ''
     });
 
     if (!userData) {

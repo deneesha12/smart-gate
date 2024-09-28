@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Admin, data } from '../../Admin';
+import { Admin } from '../../Admin';
 import { Box, Button, TextField, Typography, MenuItem, IconButton } from '@mui/material';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Webcam from 'react-webcam';
+import axios from 'axios';
 
 const CreateUser = () => {
     const location = useLocation();
@@ -13,11 +14,13 @@ const CreateUser = () => {
 
     // Initialize form data based on whether editing an existing user or creating a new one
     const [formData, setFormData] = useState<Admin>({
-        id: userData?.id || data.length + 1, // Auto-generate a new ID if creating a new user
-        firstName: userData?.firstName || '',
-        lastName: userData?.lastName || '',
+        id: userData?.id ||  1, // Auto-generate a new ID if creating a new user
+        first_name: userData?.first_name || '',
+        last_name: userData?.last_name || '',
         role: userData?.role || '',
         status: userData?.status || '',
+        email:userData?.email || '',
+        password:userData?.password || ''
     });
 
     const [image, setImage] = useState<string | null>(null); // State to store the captured/uploaded image
@@ -55,15 +58,29 @@ const CreateUser = () => {
 
         if (userData) {
             // Update existing user
-            const updatedData = data.map((user) =>
-                user.id === formData.id ? { ...formData, image } : user
-            );
-            console.log('Updated User Data:', updatedData);
+            // const updatedData = data.map((user) =>
+            //     user.id === formData.id ? { ...formData, image } : user
+            // );
+            // console.log('Updated User Data:', updatedData);
         } else {
             // Create a new user
             const newUser = { ...formData, image };
-            data.push(newUser);
-            console.log('New User Data:', data);
+            // data.push(newUser);
+            axios.post(import.meta.env.VITE_API_URI+'users/create/',{
+                first_name:newUser.first_name,
+                last_name:newUser.last_name,
+                email:newUser.email,
+                password:newUser.password
+            },{
+                withCredentials: true
+            }).then(res=>{
+                console.log(res)
+            }).catch(err=>{
+                if(err.response){
+                    console.log(err.response)
+                }
+            })
+            // console.log('New User Data:', newUser);
         }
 
         // Navigate back to the /user page after submitting the form
@@ -131,8 +148,8 @@ const CreateUser = () => {
 
                 <TextField
                     label="First Name"
-                    name="firstName"
-                    value={formData.firstName}
+                    name="first_name"
+                    value={formData.first_name}
                     onChange={handleChange}
                     required
                     fullWidth
@@ -140,8 +157,17 @@ const CreateUser = () => {
                 />
                 <TextField
                     label="Last Name"
-                    name="lastName"
-                    value={formData.lastName}
+                    name="last_name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    margin="normal"
+                />
+                 <TextField
+                    label="Email"
+                    name="email"
+                    value={formData.email}
                     onChange={handleChange}
                     required
                     fullWidth
@@ -151,6 +177,16 @@ const CreateUser = () => {
                     label="Role"
                     name="role"
                     value={formData.role}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    margin="normal"
+                />
+                <TextField
+                    label="Password"
+                    name="password"
+                    type='password'
+                    value={formData.password}
                     onChange={handleChange}
                     required
                     fullWidth

@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -23,12 +24,20 @@ const Login = () => {
   });
 
   const onSubmit = (data) => {
-    console.log("Email:", data.email);
-    console.log("Password:", data.password);
+    axios.post(import.meta.env.VITE_API_URI+'login/', data, {
+      withCredentials: true
+    }).then(
+      res=>{
+        toast.success("Login Successful");
+        navigate("/attendance");
+        console.log(res)
+      }
+    ).catch(err=>{
+      toast.error("Login Failed")
+    });
     let success = true;
     if (success) {
-      toast.success("Login Successful");
-      navigate("/home");
+     
     }
   };
 

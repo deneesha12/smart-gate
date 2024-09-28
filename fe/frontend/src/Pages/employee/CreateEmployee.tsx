@@ -4,6 +4,7 @@ import { Box, Button, TextField, Typography, MenuItem, IconButton } from '@mui/m
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Webcam from 'react-webcam';
+import axios from 'axios';
 
 const CreateEmployee = () => {
     const location = useLocation();
@@ -12,6 +13,7 @@ const CreateEmployee = () => {
         firstName: '',
         lastName: '',
         email: '',
+        address:'',
         nic: '',
         dob: '',
         gender: '',
@@ -49,11 +51,26 @@ const CreateEmployee = () => {
     };
 
     const handleSubmit = (e: React.FormEvent) => {
+        console.log(formData)
         e.preventDefault();
         console.log('Form Data:', formData);
         console.log('Image Data:', image);
-        // Navigate back to the /employee page after submitting the form
-        navigate('/employees');
+        axios.post(import.meta.env.VITE_API_URI+'employees/create/',{
+            first_name:formData.firstName,
+            last_name:formData.lastName,
+            email:formData.email,
+            address:formData.address,
+            nic:formData.nic,
+            dob:formData.dob,
+            gender:formData.gender,
+            designation:formData.designation
+        }).then(res=>{
+            navigate('/employees');
+        }).catch(err=>{
+            if(err.response){
+                console.log(err.response)
+            }
+        })        // Navigate back to the /employee page after submitting the form
     };
 
     return (
@@ -136,6 +153,15 @@ const CreateEmployee = () => {
                     label="Email"
                     name="email"
                     value={formData.email}
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    margin="normal"
+                />
+                 <TextField
+                    label="Address"
+                    name="address"
+                    value={formData.address}
                     onChange={handleChange}
                     required
                     fullWidth
